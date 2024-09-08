@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Empréstimo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid #28a745;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 2px solid #ff6f00;
+        }
+        .header img {
+            width: 90px;
+            height: auto;
+            margin-right: 15px;
+        }
+        .header h2 {
+            margin: 0;
+            font-size: clamp(16px, 4vw, 22px); /* Ajusta o tamanho conforme o tamanho da tela */
+            color: #28a745;
+            white-space: nowrap; /* Garante que o texto fique em uma linha */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            border-color: #28a745;
+            outline: none;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 10px;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        button:hover:enabled {
+            background-color: #218838;
+            box-shadow: 0 4px 10px rgba(33, 136, 56, 0.3);
+        }
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-size: 24px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #28a745;
+            border-right: 8px solid #ff6f00;
+            border-bottom: 8px solid #f3f3f3;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="header">
+        <img src="https://cloudfox-digital-products.s3.amazonaws.com/uploads/user/7DPXw3Xpvk3zmpq/public/stores/nVroegNADPGKwjd/logo/5YONL20hKdXz6Llm21YhlvBzCZUvRfqsCFi24u3W.png" alt="Logo">
+        <h2>Solicitação de Empréstimo</h2>
+    </div>
+    <form id="loan-form">
+        <div class="form-group">
+            <label for="full-name">Qual seu nome completo?</label>
+            <input type="text" id="full-name" placeholder="Digite seu nome completo" required>
+        </div>
+        <div class="form-group">
+            <label for="birth-date">Data de nascimento</label>
+            <input type="date" id="birth-date" required>
+        </div>
+        <div class="form-group">
+            <label for="mother-name">Nome da mãe</label>
+            <input type="text" id="mother-name" placeholder="Digite o nome da sua mãe" required>
+        </div>
+        <div class="form-group">
+            <label for="client-type">Você é Pessoa Física (PF) ou Pessoa Jurídica (PJ)?</label>
+            <select id="client-type" required>
+                <option value="">Selecione uma opção</option>
+                <option value="pf">Pessoa Física</option>
+                <option value="pj">Pessoa Jurídica</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="purpose">Qual o propósito do empréstimo?</label>
+            <select id="purpose" required>
+                <option value="">Selecione uma opção</option>
+                <option value="negocio">Abrir ou expandir um negócio</option>
+                <option value="dividas">Pagar dívidas</option>
+                <option value="educacao">Educação</option>
+                <option value="outros">Outros</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="employment-status">Qual é a sua situação de emprego?</label>
+            <select id="employment-status" required>
+                <option value="">Selecione uma opção</option>
+                <option value="empregado">Empregado</option>
+                <option value="autonomo">Autônomo</option>
+                <option value="desempregado">Desempregado</option>
+                <option value="empresario">Empresário</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="income">Qual é a sua renda mensal?</label>
+            <select id="income" required>
+                <option value="">Selecione uma opção</option>
+                <option value="2000">R$ 2.000 - R$ 4.000</option>
+                <option value="4000">R$ 4.001 - R$ 6.000</option>
+                <option value="6000">R$ 6.001 - R$ 8.000</option>
+                <option value="8000">Acima de R$ 8.000</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="credit-score">Como você avalia seu histórico de crédito?</label>
+            <select id="credit-score" required>
+                <option value="">Selecione uma opção</option>
+                <option value="bom">Bom</option>
+                <option value="regular">Regular</option>
+                <option value="ruim">Ruim</option>
+                <option value="nao_sabe">Não sei</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="residence-time">Há quanto tempo você mora no seu endereço atual?</label>
+            <select id="residence-time" required>
+                <option value="">Selecione uma opção</option>
+                <option value="menos1ano">Menos de 1 ano</option>
+                <option value="1-3anos">1 a 3 anos</option>
+                <option value="3-5anos">3 a 5 anos</option>
+                <option value="mais5anos">Mais de 5 anos</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="marital-status">Qual é o seu estado civil?</label>
+            <select id="marital-status" required>
+                <option value="">Selecione uma opção</option>
+                <option value="solteiro">Solteiro(a)</option>
+                <option value="casado">Casado(a)</option>
+                <option value="divorciado">Divorciado(a)</option>
+                <option value="viuvo">Viúvo(a)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="dependents">Você possui dependentes?</label>
+            <select id="dependents" required>
+                <option value="">Selecione uma opção</option>
+                <option value="nenhum">Nenhum</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="mais3">3 ou mais</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ownership">Você possui imóvel próprio?</label>
+            <select id="ownership" required>
+                <option value="">Selecione uma opção</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="vehicle">Você possui veículo próprio?</label>
+            <select id="vehicle" required>
+                <option value="">Selecione uma opção</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="insurance">Você possui seguro de vida?</label>
+            <select id="insurance" required>
+                <option value="">Selecione uma opção</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        </div>
+        <button type="button" id="submit-button" disabled>Enviar</button>
+    </form>
+</div>
+
+<div class="loading-screen" id="loading-screen">
+    <div class="spinner"></div>
+    <div>Verificando os dados...</div>
+</div>
+
+<script>
+    function validateForm() {
+        const inputs = document.querySelectorAll('#loan-form input, #loan-form select');
+        const button = document.getElementById('submit-button');
+        let allFilled = true;
+
+        inputs.forEach(input => {
+            if (!input.value) {
+                allFilled = false;
+            }
+        });
+
+        button.disabled = !allFilled;
+    }
+
+    document.getElementById('loan-form').addEventListener('input', validateForm);
+
+    document.getElementById('submit-button').addEventListener('click', function() {
+        // Exibir tela de carregamento
+        document.getElementById('loading-screen').style.display = 'flex';
+        
+        // Simular carregamento e redirecionar
+        setTimeout(() => {
+            window.location.href = 'https://www.google.com';
+        }, 2000); // tempo de carregamento de 2 segundos
+    });
+</script>
+
+</body>
+</html>
