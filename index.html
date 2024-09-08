@@ -101,6 +101,8 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            padding: 20px;
+            text-align: center;
         }
         .spinner {
             border: 8px solid #f3f3f3;
@@ -112,6 +114,26 @@
             height: 70px;
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
+        }
+        .checklist {
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            text-align: left;
+            color: #f8f9fa;
+        }
+        .check-item {
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .check-icon {
+            color: #28a745;
+            margin-right: 10px;
+            font-size: 20px;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -248,6 +270,13 @@
 <div class="loading-screen" id="loading-screen">
     <div class="spinner"></div>
     <div>Verificando os dados...</div>
+    <div class="checklist">
+        <div class="check-item" id="check1"><span class="check-icon">✔️</span> CPF verificado</div>
+        <div class="check-item" id="check2"><span class="check-icon">✔️</span> Dados validados</div>
+        <div class="check-item" id="check3"><span class="check-icon">✔️</span> Buscando bancos parceiros</div>
+        <div class="check-item" id="check4"><span class="check-icon">✔️</span> Verificando ofertas de crédito disponíveis</div>
+        <div class="check-item" id="check5"><span class="check-icon">✔️</span> Oferta encontrada</div>
+    </div>
 </div>
 
 <script>
@@ -271,10 +300,18 @@
         // Exibir tela de carregamento
         document.getElementById('loading-screen').style.display = 'flex';
         
-        // Simular carregamento e redirecionar
+        // Sequência das verificações
+        const checks = ['check1', 'check2', 'check3', 'check4', 'check5'];
+        checks.forEach((check, index) => {
+            setTimeout(() => {
+                document.getElementById(check).style.opacity = '1';
+            }, (index + 1) * 1000); // Mostra cada mensagem com 1 segundo de intervalo
+        });
+
+        // Redirecionar após mostrar todas as mensagens
         setTimeout(() => {
             window.location.href = 'https://acess.lojaoficials.online/credfacil-aprovado';
-        }, 2000); // tempo de carregamento de 2 segundos
+        }, (checks.length + 1) * 1000);
     });
 </script>
 
